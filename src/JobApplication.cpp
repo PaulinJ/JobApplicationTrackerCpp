@@ -1,15 +1,16 @@
 #include "JobApplication.h"
+#include "JobApplicationManager.h"
 #include <iostream>
 #include <fstream>
-#include <vector>   
+#include <vector>
 
+JobApplication::JobApplication() 
+    : CompanyName("Unknown"), Jobtitle("Unknown"), Status(ApplicationStatus::In_Progress) {};
+// Constructor for JobApplication
+JobApplication::JobApplication(std::string company, std::string title, std::string status)
+    : CompanyName(company), Jobtitle(title), Status(JobApplicationManager::stringToStatus(status)) {};
 
- JobApplication::JobApplication (): 
- CompanyName("Unknown"), Jobtitle("Unknown"), Status(ApplicationStatus::In_Progress) {};
-
-JobApplication::JobApplication (std::string company, std::string title)
-:CompanyName(company), Jobtitle(title), Status(ApplicationStatus::In_Progress) {};
-
+// Enum to string conversion for status
 std::string JobApplication::EnumtoString() const {
     switch (Status) {
         case ApplicationStatus::Received:
@@ -25,11 +26,13 @@ std::string JobApplication::EnumtoString() const {
     }
 }
 
-void JobApplication::DisplayDetails () const {
-    std::cout << "Company Name: " << CompanyName <<std::endl;
-    std::cout << "Job Title: " <<Jobtitle <<std::endl;
-    std::cout <<"Status: " <<EnumtoString() <<std::endl;
+// Display the details of the application
+void JobApplication::DisplayDetails() const {
+    std::cout << "Company Name: " << CompanyName << std::endl;
+    std::cout << "Job Title: " << Jobtitle << std::endl;
+    std::cout << "Status: " << EnumtoString() << std::endl;
 }
+
 // Getter functions to access private variables
 std::string JobApplication::getCompanyName() const {
     return CompanyName;
@@ -47,29 +50,32 @@ ApplicationStatus JobApplication::getStatus() const {
 void JobApplication::setStatus(ApplicationStatus newStatus) {
     Status = newStatus;
 }
+
+// Display the applicant menu
 void JobApplication::DisplayApplicantMenu() {
     std::cout << "\n=== Applicant Menu ===\n";
     std::cout << "1. Apply for a position \n";
     std::cout << "2. View recent applications \n";
     std::cout << "3. Exit\n";
 }
+
+// Apply for a position and save to a file
 void JobApplication::ApplyForPosition() {
     std::string name, id, companyName, jobTitle;
-     // Get applicant's personal information
+    
+    // Get applicant's personal information
     std::cout << "Enter your name: ";
     std::cin >> name;
     std::cout << "Enter your ID: ";
     std::cin >> id;
-
-
+    
     std::cout << "Enter company name: ";
     std::cin >> companyName;
     std::cout << "Enter job title: ";
     std::cin >> jobTitle;
     
-
     // Create a new JobApplication with 'In_Progress' status
-    JobApplication newApplication(companyName, jobTitle);
+    JobApplication newApplication(companyName, jobTitle, "In_Progress");
     
     // Save the application to a file (For simplicity, appending to a file here)
     std::ofstream file("applications.txt", std::ios::app);
@@ -81,6 +87,8 @@ void JobApplication::ApplyForPosition() {
     }
     file.close();
 }
+
+// View recent applications
 void JobApplication::ViewRecentApplications() {
     std::string name, id, line;
     std::cout << "Enter your name: ";
@@ -88,7 +96,7 @@ void JobApplication::ViewRecentApplications() {
     std::cout << "Enter your ID: ";
     std::cin >> id;
     
-    //reading recent applications based on name and ID
+    // Reading recent applications based on name and ID
     std::ifstream file("applications.txt");
     std::vector<std::string> lines; // To store all lines temporarily
     bool found = false;
@@ -125,7 +133,7 @@ void JobApplication::ViewRecentApplications() {
                 if (fileStatus == "Rejected" || fileStatus == "Withdrawn") {
                    std::cout << "This application cannot be withdrawn.\n";    
                    continue;
-                   }
+                }
 
                 if (withdrawOption == "Yes" || withdrawOption == "Y") {
                     std::cout << "Withdrawing application...\n";
