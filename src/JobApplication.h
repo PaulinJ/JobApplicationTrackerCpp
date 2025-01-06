@@ -1,17 +1,35 @@
 #pragma once
 #include <string>
 
+enum class ApplicationStatus {
+    Received,
+    In_Progress,
+    Rejected,
+    Withdrawn
+};
 class JobApplication {
 
     public:
     //constructor for attributes initialization
-    JobApplication (std::string company, std::string title, std::string appStatus);
+    JobApplication (std::string company, std::string title);
+    std::string EnumtoString() const;
+
+    // Getter functions to access private variables
+    std::string getCompanyName() const;
+    std::string getJobTitle() const;
+    ApplicationStatus getStatus() const;
+
+    // Setter functions to modify the status
+    void setStatus(ApplicationStatus newStatus);
+
+    void withdraw();
 
     void DisplayDetails () const;
 
     private:
     std::string CompanyName;
     std::string Jobtitle;
-    std::string Status;
+    ApplicationStatus Status;
+    bool isWithdrawn = false;
 
 };
