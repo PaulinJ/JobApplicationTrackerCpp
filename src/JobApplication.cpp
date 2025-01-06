@@ -1,6 +1,11 @@
 #include "JobApplication.h"
 #include <iostream>
+#include <fstream>
 
+
+
+JobApplication::JobApplication (std::string company, std::string title)
+:CompanyName(company), Jobtitle(title), Status(ApplicationStatus::In_Progress) {};
 
 std::string JobApplication::EnumtoString() const {
     switch (Status) {
@@ -16,8 +21,6 @@ std::string JobApplication::EnumtoString() const {
             return "Unknown Status";
     }
 }
-JobApplication::JobApplication (std::string company, std::string title)
-:CompanyName(company), Jobtitle(title), Status(ApplicationStatus::In_Progress) {};
 
 void JobApplication::DisplayDetails () const {
     std::cout << "Company Name: " << CompanyName <<std::endl;
@@ -40,4 +43,10 @@ ApplicationStatus JobApplication::getStatus() const {
 // Setter functions to modify the status
 void JobApplication::setStatus(ApplicationStatus newStatus) {
     Status = newStatus;
+}
+void JobApplication::DisplayApplicantMenu() {
+    std::cout << "\n=== Applicant Menu ===\n";
+    std::cout << "1. Apply for a position \n";
+    std::cout << "2. View recent applications \n";
+    std::cout << "3. Exit\n";
 }

@@ -14,6 +14,10 @@ class JobApplication {
     JobApplication (std::string company, std::string title);
     std::string EnumtoString() const;
 
+    void DisplayApplicantMenu();
+    void ApplyForPosition(); 
+    void ViewRecentApplications();
+
     // Getter functions to access private variables
     std::string getCompanyName() const;
     std::string getJobTitle() const;

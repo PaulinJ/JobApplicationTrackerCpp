@@ -2,7 +2,7 @@
 #include <iostream>
 
 int main (){
-    JobApplication app ("OpenAI", "Software Engineer", "Applied");
+    JobApplication app ("OpenAI", "Software Engineer");
 
     app.DisplayDetails(); 
 
