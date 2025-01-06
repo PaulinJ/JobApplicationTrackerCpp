@@ -6,7 +6,7 @@
 
  JobApplication::JobApplication (): 
  CompanyName("Unknown"), Jobtitle("Unknown"), Status(ApplicationStatus::In_Progress) {};
- 
+
 JobApplication::JobApplication (std::string company, std::string title)
 :CompanyName(company), Jobtitle(title), Status(ApplicationStatus::In_Progress) {};
 
@@ -88,8 +88,7 @@ void JobApplication::ViewRecentApplications() {
     std::cout << "Enter your ID: ";
     std::cin >> id;
     
-    // Simulating reading recent applications based on name and ID
-    // Here, we're assuming that we can just read from a file and filter applications.
+    //reading recent applications based on name and ID
     std::ifstream file("applications.txt");
     std::vector<std::string> lines; // To store all lines temporarily
     bool found = false;

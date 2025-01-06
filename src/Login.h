@@ -9,5 +9,6 @@ class Login {
     // Menu and login logic
     void runMenu();  
     bool authenticateAdmin(); // Admin authentication function
+    void viewAllApplications();
     void DisplayMenu();  // Function to display the menu
 };
