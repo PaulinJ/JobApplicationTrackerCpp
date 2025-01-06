@@ -1,4 +1,6 @@
 #include "Login.h"
+#include "JobApplicationManager.h"
+#include "JobApplication.h"
 #include <fstream>
 #include <vector>
 #include <iostream>
@@ -44,20 +46,8 @@ void Login::DisplayMenu() {
     std::cout << "3. Exit\n";
 }
 void Login::viewAllApplications() {
-    std::ifstream inputFile("applications.txt");
-    std::vector<std::string> applications;
-    std::string line;
-
-    // Read applications into a vector for easy manipulation
-    if (inputFile.is_open()) {
-        while (std::getline(inputFile, line)) {
-            applications.push_back(line);
-        }
-        inputFile.close();
-    } else {
-        std::cerr << "Error: Could not open the applications file.\n";
-        return;
-    }
+    JobApplicationManager manager("applications.txt");
+    std::vector<JobApplication> applications = manager.loadApplications();
 
     if (applications.empty()) {
         std::cout << "No applications found.\n";
@@ -68,7 +58,11 @@ void Login::viewAllApplications() {
     while (!exitMenu) {
         std::cout << "\n=== All Applications ===\n";
         for (size_t i = 0; i < applications.size(); ++i) {
-            std::cout << i + 1 << ". " << applications[i] << "\n";
+            // Display application details using getters
+            std::cout << i + 1 << ". " << applications[i].getCompanyName() 
+                      << " - " << applications[i].getJobTitle() 
+                      << " - " << (applications[i].getStatus() == ApplicationStatus::In_Progress ? "PENDING" :
+                                   applications[i].getStatus() == ApplicationStatus::Received ? "APPROVED" : "REJECTED") << "\n";
         }
 
         std::cout << "\nSelect an application to Approve/Reject (0 to Exit): ";
@@ -79,16 +73,21 @@ void Login::viewAllApplications() {
             exitMenu = true;  // Exit menu
         } else if (choice > 0 && choice <= applications.size()) {
             // Admin chooses to approve/reject
-            std::cout << "\nSelected: " << applications[choice - 1] << "\n";
+            JobApplication &selectedApp = applications[choice - 1];
+            std::cout << "\nSelected: " << selectedApp.getCompanyName() 
+                      << " - " << selectedApp.getJobTitle() 
+                      << " - " << (selectedApp.getStatus() == ApplicationStatus::In_Progress ? "PENDING" :
+                                  selectedApp.getStatus() == ApplicationStatus::Received ? "APPROVED" : "REJECTED") << "\n";
+
             std::cout << "1. Approve\n2. Reject\nEnter your choice: ";
             int decision;
             std::cin >> decision;
 
             if (decision == 1) {
-                applications[choice - 1] += " [APPROVED]";
+                selectedApp.setStatus(ApplicationStatus::Received);
                 std::cout << "Application Approved.\n";
             } else if (decision == 2) {
-                applications[choice - 1] += " [REJECTED]";
+                selectedApp.setStatus(ApplicationStatus::Rejected);
                 std::cout << "Application Rejected.\n";
             } else {
                 std::cout << "Invalid choice. Returning to menu.\n";
@@ -98,16 +97,8 @@ void Login::viewAllApplications() {
         }
     }
 
-    // Write the updated applications back to the file
-    std::ofstream outputFile("applications.txt");
-    if (outputFile.is_open()) {
-        for (const auto &app : applications) {
-            outputFile << app << "\n";
-        }
-        outputFile.close();
-    } else {
-        std::cerr << "Error: Could not save the updated applications.\n";
-    }
+    // Save the updated applications back to the file
+    manager.saveApplications(applications);
 }
 
 void Login::runMenu() {
