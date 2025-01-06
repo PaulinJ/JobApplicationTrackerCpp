@@ -10,6 +10,8 @@ enum class ApplicationStatus {
 class JobApplication {
 
     public:
+    
+    JobApplication ();
     //constructor for attributes initialization
     JobApplication (std::string company, std::string title);
     std::string EnumtoString() const;

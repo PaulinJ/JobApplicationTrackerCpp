@@ -1,11 +1,14 @@
+#include "Login.h"
 #include "JobApplication.h"
 #include <iostream>
 
 int main (){
-    JobApplication app ("OpenAI", "Software Engineer");
+    
+    std::cout << "=== Welcome to Job Application Tracker ===\n";
 
-    app.DisplayDetails(); 
-
+    Login loginSystem;
+    loginSystem.runMenu();
 
     return 0;
+    
 }

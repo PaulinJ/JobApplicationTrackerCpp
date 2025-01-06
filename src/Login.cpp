@@ -1,6 +1,8 @@
 #include "Login.h"
 #include <iostream>
 
+
+Login::Login() {};
 bool Login::authenticateAdmin() {
     const std::string adminPassword = "admin123"; 
     std::string enteredPassword;
@@ -44,48 +46,60 @@ void Login::runMenu() {
     char choice;
 
     do {
-        DisplayMenu();  // Show the menu options
+        // Display the central menu
+        DisplayMenu();
         std::cout << "Enter the option (1, 2 or 3): ";
         std::cin >> choice;
 
         switch (choice) {
-            case '1':
+            case '1':  // Admin functionality
                 if (authenticateAdmin()) {
                     std::cout << "\nAdmin Access Granted.\n";
-                    // Handle admin functionalities here
-
-                }
-                else {
+                    // Call admin functionality (to be implemented later)
+                } else {
                     std::cout << "Admin login failed.\n";
                 }
-                
                 break;
-            case '2':
+
+            case '2': {  // Applicant functionality
                 std::cout << "\nApplicant Mode - No Password Required\n";
-                // Handle applicant functionalities here
+                JobApplication app;  
+                char applicantChoice;
+
+                do {
+                    app.DisplayApplicantMenu();  // Display applicant menu
+                    std::cout << "Enter your choice: ";
+                    std::cin >> applicantChoice;
+
+                    switch (applicantChoice) {
+                        case '1':
+                            app.ApplyForPosition();  // Apply for a job
+                            break;
+
+                        case '2':
+                            app.ViewRecentApplications();  // View applications
+                            break;
+
+                        case '3':
+                            std::cout << "Returning to the central menu...\n";
+                            break;
+
+                        default:
+                            std::cout << "Invalid choice. Please try again.\n";
+                            break;
+                    }
+                } while (applicantChoice != '3');  // Exit applicant submenu
                 break;
-            case '3':
-                std::cout << "Exiting...\n";
+            }
+
+            case '3':  // Exit the program
+                std::cout << "Exiting the program. Goodbye!\n";
                 break;
-            default:
-                std::cout << "Invalid choice! Please select 1, 2, or 3.\n";
+
+            default:  // Handle invalid input
+                std::cout << "Invalid choice. Please try again.\n";
                 break;
         }
 
-        std::cout << "Do you want to go back to the central menu? (Yes/No): ";
-        std::string position;
-        std::cin >> position;
-
-        while (position != "Yes" && position != "Y" && position != "No" && position != "N") {
-            std::cout << "Please enter either Yes/Y or No/N: ";
-            std::cin.clear();
-            std::cin >> position;
-        }
-
-        if (position == "No" || position == "N") {
-            std::cout << "Exited.\n";
-            break;
-        }
-
-    } while (choice != '3');  // Loop until the user selects 'Exit'
+    } while (choice != '3');  // Loop until the user selects 'Exit' from the central menu
 }
