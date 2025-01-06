@@ -24,3 +24,6 @@
 ../.vscode/
 # Ignore application data (e.g., applications.txt)
 applications.txt
+# Ignore Visual Studio and VS Code files located in the parent directory
+./.vs/
+./.vscode/
