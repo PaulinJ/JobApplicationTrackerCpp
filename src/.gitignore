@@ -20,3 +20,7 @@
 
 # Ignore IDE settings (e.g., for Visual Studio)
 .vs/
+../.vs/
+../.vscode/
+# Ignore application data (e.g., applications.txt)
+applications.txt
