@@ -1,5 +1,4 @@
 # Job Application Tracker
-## Not Complete yet
 A C++ application to help users track their job applications. This project allows users to apply for positions, view recent applications, and withdraw applications if necessary. 
 Has a few more options for admin user
 
